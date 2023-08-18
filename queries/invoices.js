@@ -21,23 +21,23 @@ const getInvoiceById = async (id) => {
 const addInvoice = async (data) => {
   try {
     const newInvoice = await db.one(
-      "INSERT INTO invoices (createdAt, paymentDue, description, paymentTerms, clientName, clientEmail, isPaid, senderStreetAddress, senderCity, senderPostCode, senderCountry, clientStreetAddress, clientCity, clientPostCode, clientCountry) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *",
+      "INSERT INTO invoices (createdat, paymentdue, description, paymentterms, clientname, clientemail, ispaid, senderstreetaddress, sendercity, senderpostcode, sendercountry, clientstreetaddress, clientcity, clientpostcode, clientcountry) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *",
       [
-        data.createdAt,
-        data.paymentDue,
+        data.createdat,
+        data.paymentdue,
         data.description,
-        data.paymentTerms,
-        data.clientName,
-        data.clientEmail,
-        data.isPaid,
-        data.senderStreetAddress,
-        data.senderCity,
-        data.senderPostCode,
-        data.senderCountry,
-        data.clientStreetAddress,
-        data.clientCity,
-        data.clientPostCode,
-        data.clientCountry,
+        data.paymentterms,
+        data.clientname,
+        data.clientemail,
+        data.ispaid,
+        data.senderstreetaddress,
+        data.sendercity,
+        data.senderpostcode,
+        data.sendercountry,
+        data.clientstreetaddress,
+        data.clientcity,
+        data.clientpostcode,
+        data.clientcountry,
       ]
     );
     return newInvoice;
@@ -49,27 +49,27 @@ const addInvoice = async (data) => {
 const updateInvoice = async (id, invoice) => {
   try {
     const updatedInvoice = await db.any(
-      "UPDATE invoices SET createdAt = $1, paymentDue = $2, description = $3, paymentTerms = $4, clientName = $5, clientEmail = $6, isPaid = $7, senderStreetAddress = $8, senderCity = $9, senderPostCode = $10, senderCountry = $11, clientStreetAddress = $12, clientCity = $13, clientPostCode = $14, clientCountry = $15 RETURNING *",
+      "UPDATE invoices SET createdat = $1, paymentdue = $2, description = $3, paymentterms = $4, clientname = $5, clientemail = $6, ispaid = $7, senderstreetaddress = $8, sendercity = $9, senderpostcode = $10, sendercountry = $11, clientstreetaddress = $12, clientcity = $13, clientpostcode = $14, clientcountry = $15 WHERE id = $16 RETURNING *",
       [
-        data.createdAt,
-        data.paymentDue,
-        data.description,
-        data.paymentTerms,
-        data.clientName,
-        data.clientEmail,
-        data.isPaid,
-        data.senderStreetAddress,
-        data.senderCity,
-        data.senderPostCode,
-        data.senderCountry,
-        data.clientStreetAddress,
-        data.clientCity,
-        data.clientPostCode,
-        data.clientCountry,
+        invoice.createdat,
+        invoice.paymentdue,
+        invoice.description,
+        invoice.paymentterms,
+        invoice.clientname,
+        invoice.clientemail,
+        invoice.ispaid,
+        invoice.senderstreetaddress,
+        invoice.sendercity,
+        invoice.senderpostcode,
+        invoice.sendercountry,
+        invoice.clientstreetaddress,
+        invoice.clientcity,
+        invoice.clientpostcode,
+        invoice.clientcountry,
         id,
       ]
     );
-    return newInvoice;
+    return updatedInvoice;
   } catch (error) {
     return error;
   }

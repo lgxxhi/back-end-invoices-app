@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const itemsController = require("./itemsController");
+
+router.use("/:invoiceId/items", itemsController);
+
 const {
   getAllInvoices,
   getInvoiceById,
@@ -27,7 +31,7 @@ router.get("/:id", async (req, res) => {
   if (invoice.length === 0) {
     res.status(404).json({ error: "not found" });
   } else {
-    res.json(pet[0]);
+    res.json(invoice[0]);
   }
 });
 

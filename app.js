@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const app = express();
 
 const invoiceController = require("./controllers/invoicesController");
+const itemsController = require("./controllers/itemsController");
 
 app.use(cors());
 app.use(express.json());
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/invoices", invoiceController);
+app.use("/items", itemsController);
 
 app.get("*", (req, res) => {
   res.status(404).send("Page not found!");
