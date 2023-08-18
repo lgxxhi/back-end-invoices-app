@@ -1,18 +1,37 @@
 const db = require("../db/dbConfig.js");
 
-const getAllItems = async () => {
+const getAllItems = async (invoiceId) => {
   try {
-    const allItems = db.any("SELECT * FROM items ORDER BY ID ASC");
+    const allItems = db.any(
+      "SELECT * FROM items where invoice_id = $1 ORDER BY id ASC",
+      invoiceId
+    );
     return allItems;
   } catch (error) {
     return error;
   }
 };
 
-const getItemById = async (id) => {
+const getItemById = async (invoiceId, itemId) => {
   try {
-    const item = await db.any(`SELECT * FROM items WHERE id = $1`, id);
-    return item;
+    // const item = await db.any(`SELECT * FROM items WHERE id = $1`, id);
+
+    const oneItem = await db.any(
+      `
+        SELECT INVOICE_ID,
+            ITEM_NAME,
+            QUANTITY,
+            PRICE,
+            TOTAL
+        FROM INVOICES
+        JOIN ITEMS ON INVOICES.ID = ITEMS.INVOICE_ID
+        WHERE INVOICES.ID = $1
+            AND ITEMS.ID = $2;
+    `,
+      [invoiceId, itemId]
+    );
+
+    return oneItem;
   } catch (error) {
     return error;
   }
@@ -54,12 +73,19 @@ const deleteItem = async (id) => {
   }
 };
 
-const getAllReviewsOnInvoiceId = async (invoice_id) => {
+const getAllItemsOnInvoiceId = async (invoice_id) => {
   try {
+    // const allItems = await db.any(
+    //   `SELECT * FROM items WHERE invoice_id = $1`,
+    //   invoice_id
+    // );
+
     const allItems = await db.any(
-      `SELECT * FROM items WHERE invoice_id = $1`,
+      `SELECT * FROM invoices INNER JOIN items ON items.invoice_id = invoices.id WHERE items.invoice_id = $1`,
       invoice_id
     );
+    console.log(allItems);
+    return allItems;
   } catch (error) {
     return error;
   }
@@ -71,5 +97,5 @@ module.exports = {
   deleteItem,
   addItem,
   updateItem,
-  getAllReviewsOnInvoiceId,
+  getAllItemsOnInvoiceId,
 };
