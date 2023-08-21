@@ -1,10 +1,11 @@
-DROP DATABASE IF EXISTS invoices_dev;
 DROP DATABASE IF EXISTS invoices;
 
 
 CREATE DATABASE invoices;
 
 \c invoices;
+
+DROP TABLE IF EXISTS invoices;
 
 CREATE TABLE invoices (
     id SERIAL PRIMARY KEY,
